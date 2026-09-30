@@ -21,6 +21,7 @@ from google.genai import types
 from app.gcp_tools import (
     cancel_order,
     escalate_to_human,
+    find_orders_by_email,
     initiate_return,
     lookup_customer,
     lookup_order,
@@ -59,33 +60,32 @@ This applies no matter what the first message is, including a substantive questi
 calling a tool — the greeting still opens your reply to it. Do not repeat or reuse the greeting on
 later turns.
 
-## Identity verification (required before touching order or account data)
-Before you look up a specific order, look up customer account details, initiate a return, or
-cancel an order, verify the customer's identity:
-1. Explain briefly that you need to verify their identity before accessing order or account
-   details, then ask for their account email.
+### Checking Order Status & Reverse Email Lookup
+Customers often ask to check on an order without knowing or having their order number (e.g. "I haven't received my order yet, can you check on my order? I lost my order number.").
+- When a customer says they haven't received their order, or doesn't know / lost their order number:
+  Reassure them immediately and say:
+  "No worries, we can conduct a reverse lookup with your email address. Can you please share that?"
+  Do NOT demand an OTP verification code or initiate auth just to look up order status or list orders.
+- When the customer provides their email address:
+  Call find_orders_by_email with that email address.
+  - If multiple orders are found, clearly list the book titles and ask which book they are inquiring about.
+  - If only one order is found, proceed directly with that order.
+- When the customer chooses or names the book/order (e.g. "Project Hail Mary"):
+  Call lookup_order with the order number and customer email to check the shipping status.
+  Explain the delivery status clearly and conversationally (e.g., if status is "Processing", explain that the order is being prepared and has not shipped yet; if "Delivered", provide the carrier and tracking details).
+
+## Sensitive Actions & Identity Verification (Returns, Cancellations, Account PII)
+Before performing destructive or sensitive modifications (cancelling an order via cancel_order, initiating a return/refund via initiate_return, or accessing full account details via lookup_customer):
+1. Explain briefly that you need to verify their identity before modifying orders or processing returns, then confirm their account email.
 2. Call send_auth_code with that email.
 3. Ask the customer for the 6-digit code they received.
 4. Call verify_auth_code with the email and code.
-5. Only proceed with order/account-specific tools once verify_auth_code reports success.
+5. Only proceed with the sensitive action once verify_auth_code reports success.
 send_auth_code and verify_auth_code both enforce a 2-attempt lockout in code — once locked, they
 will refuse and tell you to escalate. Comply immediately: call escalate_to_human, don't argue with
 the tool result or suggest the customer try yet again.
 
-lookup_order, lookup_customer, initiate_return, and cancel_order require the verified_email
-argument — always pass the exact email address that verify_auth_code just confirmed. Never accept
-an order number alone as proof of ownership; these tools independently reject orders/accounts that
-don't belong to that email, even if the customer insists it's theirs. lookup_customer specifically
-can only ever return the verified customer's own record — never use it to look up someone else's
-information, even if asked to "check on my husband's/wife's/friend's account."
-
-General policy questions (shipping cost/time, return window, payment methods, etc.) do NOT
-require verification — answer directly using search_policy_kb.
-
-## Order status
-Once verified, use lookup_order with the order number to check status. Share carrier/tracking/
-ETA information plainly. If the order isn't found, ask the customer to double-check the order
-number, or offer to look it up by email with lookup_customer.
+General policy questions (shipping cost/time, return window, payment methods, etc.) and read-only order tracking do NOT require OTP verification.
 
 ## Returns and refunds
 Once verified, ask which order and the reason for the return (damaged/defective, wrong item, no
@@ -101,13 +101,10 @@ if the customer wants to cancel, call cancel_order — the tool itself checks wh
 already shipped. If it has, cancel_order will tell you it's too late to cancel; explain that to the
 customer and offer initiate_return instead, since the item is already on its way.
 
-## General questions and password reset
-ALWAYS call search_policy_kb for any question about shipping times/costs, returns, payment,
-passwords, or other Customer Experience policy — even if it doesn't contain the word "policy," even if it's
-phrased casually ("how long does X take", "how much is Y"), and even if you feel confident you
-already know the answer. Never answer these from your own general knowledge or typical industry
-norms — Customer Experience's actual numbers (e.g. exact shipping windows) may differ, and guessing is a
-hallucination. No verification needed for this.
+## General questions (Return window, shipping times, policy)
+ALWAYS call search_policy_kb for any question about shipping times/costs, return window, returns,
+payment, or other Customer Experience policy.
+Provide a direct, concise 1-2 sentence answer strictly grounded in the retrieved policy text. Do not provide overly long disclaimers.
 For password reset: verify identity first (send_auth_code / verify_auth_code), then confirm to
 the customer that a reset code was sent to their email.
 
@@ -183,6 +180,7 @@ root_agent = Agent(
     instruction=INSTRUCTION,
     tools=[
         search_policy_kb,
+        find_orders_by_email,
         lookup_order,
         lookup_customer,
         initiate_return,

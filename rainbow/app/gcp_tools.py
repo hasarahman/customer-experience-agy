@@ -77,7 +77,7 @@ def search_policy_kb(query: str) -> str:
     return "\n\n---\n\n".join(docs)
 
 
-def lookup_order(order_number: str, verified_email: str) -> str:
+def lookup_order(order_number: str, customer_email: str = "") -> str:
     """Looks up an order in Customer Experience's Orders database by order number.
 
     Returns shipping status, the customer it belongs to, what was ordered,
@@ -85,14 +85,12 @@ def lookup_order(order_number: str, verified_email: str) -> str:
 
     Args:
         order_number: The order number, e.g. "BK-10001".
-        verified_email: The email address that was just confirmed via
-            verify_auth_code. This must belong to the same customer who
-            placed the order — never pass an email the customer hasn't
-            actually verified.
+        customer_email: Optional email address. If provided, ensures the order
+            belongs to this customer.
 
     Returns:
         The order's details, a not-found message, or a denial if the order
-        doesn't belong to the verified email.
+        doesn't belong to the provided email.
     """
     clean_order_num = order_number.strip().upper()
     order_data = None
@@ -111,13 +109,57 @@ def lookup_order(order_number: str, verified_email: str) -> str:
     if order_data is None:
         return f"No order found with order number {order_number}."
 
-    if order_data.get("customer_email", "").strip().lower() != verified_email.strip().lower():
+    if customer_email and order_data.get("customer_email", "").strip().lower() != customer_email.strip().lower():
         return (
-            f"Order {order_number} does not belong to the verified account "
-            f"({verified_email}). Access denied."
+            f"Order {order_number} does not belong to the account "
+            f"({customer_email}). Access denied."
         )
 
     return str(order_data)
+
+
+def find_orders_by_email(customer_email: str) -> str:
+    """Conducts a reverse lookup in the Orders database using the customer's email.
+
+    Use this when a customer doesn't know or has lost their order number.
+    Returns a list of matching orders with order numbers, book titles, dates, and shipping statuses.
+
+    Args:
+        customer_email: The customer's account email address, e.g. "hasan2296@outlook.com".
+
+    Returns:
+        A list of matching orders or a message if no orders were found.
+    """
+    clean_email = customer_email.strip().lower()
+    orders = []
+
+    if not gcp_manager.is_mock:
+        try:
+            query = gcp_manager.firestore.collection("orders").where("customer_email", "==", clean_email)
+            docs = list(query.stream())
+            orders = [d.to_dict() for d in docs]
+        except Exception as e:
+            logger.warning(f"Firestore reverse order lookup failed ({e}); checking mock.")
+
+    if not orders:
+        orders = gcp_manager.mock_db.query_collection("orders", "customer_email", clean_email)
+
+    if not orders:
+        return f"No orders found for customer email: {customer_email}."
+
+    summary = []
+    for o in orders:
+        num = o.get("order_number", "Unknown")
+        book = o.get("book_ordered", "Unknown Book")
+        status = o.get("shipping_status", "Unknown")
+        carrier = o.get("carrier", "")
+        tracking = o.get("tracking_number", "")
+        summary.append(
+            f"- Order {num}: \"{book}\" | Status: {status}"
+            + (f" ({carrier} Tracking: {tracking})" if tracking else "")
+        )
+
+    return f"Found {len(orders)} order(s) for {customer_email}:\n" + "\n".join(summary)
 
 
 def lookup_customer(verified_email: str) -> str:

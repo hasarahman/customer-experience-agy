@@ -29,7 +29,7 @@ def type_slowly(page, selector, text, delay=0.04):
 def reset_session():
     """Resets the server-side Cloud Run session so demo starts fresh."""
     try:
-        req = urllib.request.Request("http://localhost:8085/api/reset", data=b"{}", method="POST")
+        req = urllib.request.Request("http://127.0.0.1:8085/api/reset", data=b"{}", method="POST")
         with urllib.request.urlopen(req) as resp:
             pass
     except Exception as e:
@@ -102,65 +102,79 @@ def run_recording(headless=True):
         page = context.new_page()
 
         print("\n🌐 [Step 1/5] Opening Customer Experience Web Chat...")
-        page.goto("http://localhost:8085")
+        page.goto("http://127.0.0.1:8085")
         page.wait_for_selector("#msgs", timeout=10000)
         time.sleep(2.5)
 
         # ---------------------------------------------------------
-        # Turn 1: Grounded RAG Query (Return Policy)
+        # Turn 1: Friendly Greeting
         # ---------------------------------------------------------
-        print("\n💬 [Step 2/5] Asking policy question (testing Agent Platform RAG)...")
-        query_1 = "What is your return policy and window?"
-        type_slowly(page, "#userInput", query_1, delay=0.035)
+        print("\n💬 [Turn 1/5] Greeting Rainbow...")
+        query_1 = "Hi"
+        type_slowly(page, "#userInput", query_1, delay=0.04)
         time.sleep(0.7)
 
         page.click("#sendBtn")
-        print("   ⏳ Cloud Run executing search_policy_kb...")
-        wait_for_agent_reply(page, expected_agent_count=2)
-        print("   ✅ Received grounded RAG answer from Cloud Run!")
-        time.sleep(4.5)  # Let viewer read response
+        print("   ⏳ Waiting for Rainbow greeting...")
+        wait_for_agent_reply(page, expected_agent_count=1)
+        print("   ✅ Rainbow greeted the user!")
+        time.sleep(3.5)
 
         # ---------------------------------------------------------
-        # Turn 2: Identity-Gated Order Request
+        # Turn 2: Lost Order Number Inquiry
         # ---------------------------------------------------------
-        print("\n💬 [Step 3/5] Requesting order lookup for hasan2296@outlook.com...")
-        query_2 = "Can you check order BK-10001 for hasan2296@outlook.com?"
+        print("\n💬 [Turn 2/5] Reporting lost order number...")
+        query_2 = "I haven't received my order yet, can you check on my order? I lost my order number."
         type_slowly(page, "#userInput", query_2, delay=0.035)
         time.sleep(0.7)
 
         page.click("#sendBtn")
-        print("   ⏳ Waiting for identity verification prompt...")
+        print("   ⏳ Waiting for reverse lookup offer...")
+        wait_for_agent_reply(page, expected_agent_count=2)
+        print("   ✅ Rainbow offered email reverse lookup!")
+        time.sleep(3.5)
+
+        # ---------------------------------------------------------
+        # Turn 3: Provide Email Address (Reverse Lookup)
+        # ---------------------------------------------------------
+        print("\n💬 [Turn 3/5] Providing account email (hasan2296@outlook.com)...")
+        query_3 = "hasan2296@outlook.com"
+        type_slowly(page, "#userInput", query_3, delay=0.04)
+        time.sleep(0.7)
+
+        page.click("#sendBtn")
+        print("   ⏳ Cloud Run executing find_orders_by_email in Firestore...")
         wait_for_agent_reply(page, expected_agent_count=3)
-        print("   ✅ Agent requested confirmation to send OTP code.")
-        time.sleep(3.0)
+        print("   ✅ Rainbow detected multiple orders and asked to choose book!")
+        time.sleep(4.5)
 
         # ---------------------------------------------------------
-        # Turn 3: Confirm Email to Trigger send_auth_code
+        # Turn 4: Disambiguate by Book Title
         # ---------------------------------------------------------
-        print("\n💬 [Step 4/5] Confirming email to trigger send_auth_code in Firestore...")
-        query_3 = "Yes, please send the code to hasan2296@outlook.com"
-        type_slowly(page, "#userInput", query_3, delay=0.035)
+        print("\n💬 [Turn 4/5] Selecting book: Project Hail Mary...")
+        query_4 = "Project Hail Mary"
+        type_slowly(page, "#userInput", query_4, delay=0.04)
         time.sleep(0.7)
 
         page.click("#sendBtn")
-        print("   ⏳ Cloud Run generating OTP in Firestore...")
+        print("   ⏳ Cloud Run checking delivery status with lookup_order...")
         wait_for_agent_reply(page, expected_agent_count=4)
-        print("   ✅ OTP sent to customer email!")
-        time.sleep(3.0)
+        print("   ✅ Rainbow reported 'Processing' delivery status!")
+        time.sleep(4.5)
 
         # ---------------------------------------------------------
-        # Turn 4: Enter 6-digit OTP Code
+        # Turn 5: Grounded Policy Question (Return Window)
         # ---------------------------------------------------------
-        print("\n💬 [Step 5/5] Entering 6-digit OTP code (123456)...")
-        otp_code = "123456"
-        type_slowly(page, "#userInput", otp_code, delay=0.08)
+        print("\n💬 [Turn 5/5] Inquiring about return window...")
+        query_5 = "whats your return window?"
+        type_slowly(page, "#userInput", query_5, delay=0.035)
         time.sleep(0.7)
 
         page.click("#sendBtn")
-        print("   ⏳ Cloud Run verifying OTP and looking up order BK-10001...")
+        print("   ⏳ Cloud Run executing search_policy_kb via Agent Platform RAG...")
         wait_for_agent_reply(page, expected_agent_count=5)
-        print("   ✅ Identity verified! Order BK-10001 displayed successfully.")
-        time.sleep(6.5)  # Showcase final verified conversation state
+        print("   ✅ Rainbow answered 30-day policy concisely!")
+        time.sleep(6.5)  # Showcase complete conversation
 
         print("\n🏁 Finalizing and saving high-definition video...")
         page_video = page.video

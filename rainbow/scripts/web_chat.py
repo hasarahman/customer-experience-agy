@@ -190,15 +190,15 @@ HTML_PAGE = """<!DOCTYPE html>
     </div>
     
     <div class="messages" id="msgs">
-      <div class="msg agent">👋 Hi! I'm Rainbow, an AI Virtual Assistant. How can I help you today? You can ask about return policies, check order status, or initiate a return.</div>
     </div>
 
     <div class="hints">
       <span style="font-weight: 500;">Quick prompts:</span>
-      <span class="chip" onclick="fillPrompt('What is your return policy?')">Return Policy</span>
-      <span class="chip" onclick="fillPrompt('I want to return order BK-10001 (hasan2296@outlook.com)')">Return BK-10001</span>
-      <span class="chip" onclick="fillPrompt('123456')">Enter OTP: 123456</span>
-      <span class="chip" onclick="fillPrompt('Can you cancel order BK-10015?')">Cancel BK-10015</span>
+      <span class="chip" onclick="fillPrompt('Hi')">Hi</span>
+      <span class="chip" onclick="fillPrompt('I haven\'t received my order yet, can you check on my order? I lost my order number.')">Lost Order Number</span>
+      <span class="chip" onclick="fillPrompt('hasan2296@outlook.com')">hasan2296@outlook.com</span>
+      <span class="chip" onclick="fillPrompt('Project Hail Mary')">Project Hail Mary</span>
+      <span class="chip" onclick="fillPrompt('whats your return window?')">Return Window</span>
     </div>
 
     <form class="input-box" onsubmit="sendMessage(event)">
@@ -340,7 +340,9 @@ class ChatHandler(http.server.SimpleHTTPRequestHandler):
                         if "functionCall" in p:
                             tools_used.append(p["functionCall"]["name"])
                         elif "text" in p and p["text"].strip():
-                            reply_parts.append(p["text"].strip())
+                            clean_text = p["text"].strip()
+                            if clean_text not in reply_parts:
+                                reply_parts.append(clean_text)
 
                 reply_text = "\n\n".join(reply_parts)
                 response_data = {
