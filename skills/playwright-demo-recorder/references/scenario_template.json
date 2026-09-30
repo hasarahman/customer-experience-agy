@@ -1,0 +1,59 @@
+{
+  "url": "http://127.0.0.1:8085",
+  "input_selector": "#userInput",
+  "send_selector": "#sendBtn",
+  "message_selector": ".agent-message",
+  "thinking_selector": ".thinking-indicator",
+  "initial_pause": 2.5,
+  "final_pause": 6.0,
+  "turns": [
+    {
+      "desc": "Initial greeting",
+      "action": "chat",
+      "user": "Hi",
+      "typing_delay": 0.04,
+      "pre_send_pause": 0.6,
+      "read_pause": 3.5
+    },
+    {
+      "desc": "User query triggering fallback",
+      "action": "chat",
+      "user": "I haven't received my order yet, can you check on my order? I lost my order number.",
+      "typing_delay": 0.04,
+      "pre_send_pause": 0.8,
+      "read_pause": 4.0
+    },
+    {
+      "desc": "Email provision triggering auth",
+      "action": "chat",
+      "user": "user@example.com",
+      "typing_delay": 0.04,
+      "pre_send_pause": 0.7,
+      "read_pause": 3.5
+    },
+    {
+      "desc": "OTP code verification",
+      "action": "chat",
+      "user": "123456",
+      "typing_delay": 0.06,
+      "pre_send_pause": 0.7,
+      "read_pause": 4.5
+    },
+    {
+      "desc": "Selection from list",
+      "action": "chat",
+      "user": "Product Name",
+      "typing_delay": 0.04,
+      "pre_send_pause": 0.7,
+      "read_pause": 4.5
+    },
+    {
+      "desc": "Policy question",
+      "action": "chat",
+      "user": "whats your return window?",
+      "typing_delay": 0.035,
+      "pre_send_pause": 0.7,
+      "read_pause": 5.0
+    }
+  ]
+}
