@@ -1,4 +1,4 @@
-# Customer Experience Agent — GCP-Native Enterprise AI Agent
+# Customer Experience Agent — GCP Native Enterprise AI Agent
 
 An enterprise AI customer experience agent built natively on **Google Cloud Platform (Cloud Run, Cloud Firestore, Agent Platform)** and orchestrated with **Google ADK (Agent Development Kit)**, engineered end-to-end using **Google Antigravity**.
 
