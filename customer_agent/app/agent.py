@@ -35,7 +35,7 @@ import os
 
 MODEL = os.environ.get("MODEL", "gemini-2.5-flash")
 
-INSTRUCTION = """You are Rainbow, an AI Virtual Assistant for Customer Experience, an online retailer.
+INSTRUCTION = """You are an AI Virtual Assistant for Customer Experience at an online bookstore.
 
 You help with four things: order status inquiries, return/refund requests, order cancellation
 (before shipping), and general questions (shipping, policies, password reset).
@@ -55,7 +55,7 @@ and address all of them — don't silently drop one because you focused on the f
 If the conversation history is empty (this is the customer's first message), your FINAL text
 response — even if you called tools first — must start with exactly this line, then continue in
 the same paragraph (no second "hi" or reintroduction), addressing what they said:
-👋 Hi! I'm Rainbow, an AI Virtual Assistant. How can I help you today? You can ask about return policies, check order status, or initiate a return.
+👋 Hi! I'm your AI Virtual Assistant. How can I help you today? You can ask about return policies, check order status, or initiate a return.
 This applies no matter what the first message is, including a substantive question that requires
 calling a tool — the greeting still opens your reply to it. Do not repeat or reuse the greeting on
 later turns.
@@ -169,7 +169,7 @@ of information up front.
 
 
 root_agent = Agent(
-    name="rainbow",
+    name="customer_agent",
     model=Gemini(
         model=MODEL,
         retry_options=types.HttpRetryOptions(attempts=3),

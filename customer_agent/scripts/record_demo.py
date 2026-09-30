@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Autonomous Demo Recorder for Customer Experience Agent (Rainbow).
+"""Autonomous Demo Recorder for Customer Experience Agent.
 
 Interacts live with the Web Chat UI connected to Cloud Run and records a
 high-definition video (.webm and .mp4) of the entire session.
@@ -16,7 +16,23 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..
 OUTPUT_DIR = os.path.join(PROJECT_ROOT, "demo_recordings")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-FFMPEG_PATH = os.path.expanduser("~/Library/Caches/ms-playwright/ffmpeg-1011/ffmpeg-mac")
+import shutil
+
+FFMPEG_CANDIDATES = [
+    os.path.expanduser("~/Library/Caches/ms-playwright/ffmpeg-1011/ffmpeg-mac"),
+    shutil.which("ffmpeg"),
+]
+
+def get_ffmpeg():
+    try:
+        import imageio_ffmpeg
+        return imageio_ffmpeg.get_ffmpeg_exe()
+    except Exception:
+        pass
+    for p in FFMPEG_CANDIDATES:
+        if p and os.path.exists(p):
+            return p
+    return "ffmpeg"
 
 
 def type_slowly(page, selector, text, delay=0.04):
@@ -38,31 +54,43 @@ def reset_session():
 
 def convert_to_mp4(webm_path, mp4_path):
     """Converts recorded .webm video to universal .mp4 for LinkedIn/social."""
-    if os.path.exists(FFMPEG_PATH):
-        print(f"🎬 Converting {os.path.basename(webm_path)} to MP4 using FFmpeg...")
-        cmd = [
-            FFMPEG_PATH,
-            "-y",
-            "-i",
-            webm_path,
-            "-c:v",
-            "libx264",
-            "-pix_fmt",
-            "yuv420p",
-            "-preset",
-            "fast",
-            "-crf",
-            "22",
-            mp4_path,
-        ]
-        try:
-            subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
-            print(f"✅ MP4 Video Generated: {mp4_path} ({os.path.getsize(mp4_path) // 1024} KB)")
-            return True
-        except Exception as e:
-            print(f"FFmpeg conversion warning: {e}")
-            return False
-    return False
+    ffmpeg_bin = get_ffmpeg()
+    print(f"🎬 Converting {os.path.basename(webm_path)} to MP4 using {ffmpeg_bin}...")
+    cmd = [
+        ffmpeg_bin,
+        "-y",
+        "-i",
+        webm_path,
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        "-preset",
+        "medium",
+        "-crf",
+        "20",
+        "-movflags",
+        "+faststart",
+        mp4_path,
+    ]
+    try:
+        subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        print(f"✅ MP4 Video Generated: {mp4_path} ({os.path.getsize(mp4_path) // 1024} KB)")
+
+        # Copy to user Downloads folder
+        downloads_mp4 = os.path.expanduser("~/Downloads/customer_experience_agent_live_demo.mp4")
+        shutil.copyfile(mp4_path, downloads_mp4)
+        print(f"📁 Copied to Downloads: {downloads_mp4}")
+
+        # Copy to Antigravity brain artifact folder
+        artifact_mp4 = "/Users/hasanrahman/.gemini/antigravity/brain/9973951e-6d27-43c2-bae0-f68a3ae0641a/customer_experience_agent_live_demo.mp4"
+        shutil.copyfile(mp4_path, artifact_mp4)
+        print(f"📁 Copied to Artifacts: {artifact_mp4}")
+
+        return True
+    except Exception as e:
+        print(f"FFmpeg conversion warning: {e}")
+        return False
 
 
 def wait_for_agent_reply(page, expected_agent_count, timeout=40):
@@ -109,15 +137,15 @@ def run_recording(headless=True):
         # ---------------------------------------------------------
         # Turn 1: Friendly Greeting
         # ---------------------------------------------------------
-        print("\n💬 [Turn 1/5] Greeting Rainbow...")
+        print("\n💬 [Turn 1/5] Greeting Assistant...")
         query_1 = "Hi"
         type_slowly(page, "#userInput", query_1, delay=0.04)
         time.sleep(0.7)
 
         page.click("#sendBtn")
-        print("   ⏳ Waiting for Rainbow greeting...")
+        print("   ⏳ Waiting for Assistant greeting...")
         wait_for_agent_reply(page, expected_agent_count=1)
-        print("   ✅ Rainbow greeted the user!")
+        print("   ✅ Assistant greeted the user!")
         time.sleep(3.5)
 
         # ---------------------------------------------------------
@@ -131,7 +159,7 @@ def run_recording(headless=True):
         page.click("#sendBtn")
         print("   ⏳ Waiting for reverse lookup offer...")
         wait_for_agent_reply(page, expected_agent_count=2)
-        print("   ✅ Rainbow offered email reverse lookup!")
+        print("   ✅ Assistant offered email reverse lookup!")
         time.sleep(3.5)
 
         # ---------------------------------------------------------
@@ -145,7 +173,7 @@ def run_recording(headless=True):
         page.click("#sendBtn")
         print("   ⏳ Cloud Run executing send_auth_code in Firestore...")
         wait_for_agent_reply(page, expected_agent_count=3)
-        print("   ✅ Rainbow generated OTP and requested 6-digit code!")
+        print("   ✅ Assistant generated OTP and requested 6-digit code!")
         time.sleep(3.5)
 
         # ---------------------------------------------------------
@@ -159,7 +187,7 @@ def run_recording(headless=True):
         page.click("#sendBtn")
         print("   ⏳ Cloud Run executing verify_auth_code & find_orders_by_email...")
         wait_for_agent_reply(page, expected_agent_count=4)
-        print("   ✅ Identity verified! Rainbow listed orders and asked to choose book!")
+        print("   ✅ Identity verified! Assistant listed orders and asked to choose book!")
         time.sleep(4.5)
 
         # ---------------------------------------------------------
@@ -173,7 +201,7 @@ def run_recording(headless=True):
         page.click("#sendBtn")
         print("   ⏳ Cloud Run checking delivery status with lookup_order...")
         wait_for_agent_reply(page, expected_agent_count=5)
-        print("   ✅ Rainbow reported 'Processing' delivery status!")
+        print("   ✅ Assistant reported 'Processing' delivery status!")
         time.sleep(4.5)
 
         # ---------------------------------------------------------
@@ -187,17 +215,27 @@ def run_recording(headless=True):
         page.click("#sendBtn")
         print("   ⏳ Cloud Run executing search_policy_kb via Agent Platform RAG...")
         wait_for_agent_reply(page, expected_agent_count=6)
-        print("   ✅ Rainbow answered 30-day policy concisely!")
+        print("   ✅ Assistant answered 30-day policy concisely!")
         time.sleep(6.5)  # Showcase complete conversation
 
         print("\n🏁 Finalizing and saving high-definition video...")
         page_video = page.video
         raw_video_path = page_video.path() if page_video else None
+        page.close()
         context.close()
         browser.close()
 
         final_webm = os.path.join(OUTPUT_DIR, "customer_experience_agent_live_demo.webm")
         final_mp4 = os.path.join(OUTPUT_DIR, "customer_experience_agent_live_demo.mp4")
+
+        if not (raw_video_path and os.path.exists(raw_video_path)):
+            candidates = [
+                os.path.join(OUTPUT_DIR, f)
+                for f in os.listdir(OUTPUT_DIR)
+                if f.endswith(".webm") and f != "customer_experience_agent_live_demo.webm"
+            ]
+            if candidates:
+                raw_video_path = max(candidates, key=os.path.getmtime)
 
         if raw_video_path and os.path.exists(raw_video_path):
             if os.path.exists(final_webm):
@@ -207,6 +245,11 @@ def run_recording(headless=True):
             print("\n" + "=" * 65)
             print("🎉 DEMO VIDEO RECORDED SUCCESSFULLY!")
             print(f"📹 WebM Video: {final_webm} ({os.path.getsize(final_webm) // 1024} KB)")
+
+            # Copy WebM to Antigravity brain artifact folder
+            artifact_webm = "/Users/hasanrahman/.gemini/antigravity/brain/9973951e-6d27-43c2-bae0-f68a3ae0641a/customer_experience_agent_live_demo.webm"
+            shutil.copyfile(final_webm, artifact_webm)
+            print(f"📁 Copied WebM to Artifacts: {artifact_webm}")
 
             convert_to_mp4(final_webm, final_mp4)
             print("=" * 65)

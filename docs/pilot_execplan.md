@@ -1,14 +1,14 @@
-# ExecPlan: GCP-Native Firestore Modernization (Rainbow Agent)
+# ExecPlan: GCP-Native Firestore Modernization (Customer Experience Agent)
 
 ## 1. Scope & Objective
-- **Business Goal**: Modernize the Customer Experience Agent (`Rainbow`) from prototype backing services (Google Sheets, Stytch, local ChromaDB, local log files) to an enterprise-grade, **100% GCP-Native Firestore architecture** in project **`has-demo-50091`** (region `us-central1`).
+- **Business Goal**: Modernize the Customer Experience Agent  from prototype backing services (Google Sheets, Stytch, local ChromaDB, local log files) to an enterprise-grade, **100% GCP-Native Firestore architecture** in project **`has-demo-50091`** (region `us-central1`).
 - **In-Scope Components**:
-  - `rainbow/app/tools.py` $\rightarrow$ Replaced/Modernized with `rainbow/app/gcp_tools.py` (Firestore data store, Firestore Vector Search, Firestore-backed OTP, Cloud Logging).
-  - `rainbow/scripts/seed_firestore.py` $\rightarrow$ Populate initial `customers` and `orders` data.
-  - `rainbow/scripts/index_knowledge_base.py` $\rightarrow$ Chunk and embed `data/customer_experience_knowledge_base.md` using Agent Platform `text-embedding-004` into Firestore `policies`.
-  - `rainbow/app/agent.py` $\rightarrow$ Wire modernized GCP tools into `root_agent`.
-  - `rainbow/tests/integration/test_firestore_parity.py` $\rightarrow$ Deterministic parity test suite.
-  - `rainbow/tests/eval/` $\rightarrow$ Golden single-turn and multi-turn ADK evaluation runs.
+  - `customer_agent/app/tools.py` $\rightarrow$ Replaced/Modernized with `customer_agent/app/gcp_tools.py` (Firestore data store, Firestore Vector Search, Firestore-backed OTP, Cloud Logging).
+  - `customer_agent/scripts/seed_firestore.py` $\rightarrow$ Populate initial `customers` and `orders` data.
+  - `customer_agent/scripts/index_knowledge_base.py` $\rightarrow$ Chunk and embed `data/customer_experience_knowledge_base.md` using Agent Platform `text-embedding-004` into Firestore `policies`.
+  - `customer_agent/app/agent.py` $\rightarrow$ Wire modernized GCP tools into `root_agent`.
+  - `customer_agent/tests/integration/test_firestore_parity.py` $\rightarrow$ Deterministic parity test suite.
+  - `customer_agent/tests/eval/` $\rightarrow$ Golden single-turn and multi-turn ADK evaluation runs.
 - **Out-of-Scope**:
   - Rewriting the ADK core agent loop or changing the underlying Gemini model (`gemini-3.5-flash-lite`).
   - Cloud infrastructure provisioning beyond the required Firestore collections and IAM permissions.
@@ -25,7 +25,7 @@
 
 ## 3. Implementation Steps
 - [x] **Phase 0: Governance & Contract Setup**
-  - Delete `rainbow/CLAUDE.md` and clean up manifest.
+  - Delete `customer_agent/CLAUDE.md` and clean up manifest.
   - Create `.agent/AGENTS.md` and `.agent/PLANS.md`.
 - [x] **Phase 1: Pilot Scoping & ExecPlan Generation**
   - Create `docs/pilot_execplan.md` targeting project `has-demo-50091`.
@@ -34,11 +34,11 @@
 - [x] **Phase 3: Target Architecture, Schemas & Test Scaffolding**
   - Draft `docs/pilot_design.md` detailing Firestore transactional logic and vector indexes.
   - Draft `docs/pilot_validation.md` defining parity criteria and test harness.
-  - Scaffold `rainbow/tests/integration/test_firestore_parity.py`.
+  - Scaffold `customer_agent/tests/integration/test_firestore_parity.py`.
 - [x] **Phase 4: Implementation, Data Seeding & Parity Validation**
-  - Implement `rainbow/scripts/seed_firestore.py` and `rainbow/scripts/index_knowledge_base.py`.
-  - Implement `rainbow/app/gcp_tools.py` with mock/emulator support for offline execution.
-  - Update `rainbow/app/agent.py` to use GCP tools.
+  - Implement `customer_agent/scripts/seed_firestore.py` and `customer_agent/scripts/index_knowledge_base.py`.
+  - Implement `customer_agent/app/gcp_tools.py` with mock/emulator support for offline execution.
+  - Update `customer_agent/app/agent.py` to use GCP tools.
   - Execute automated tests (`pytest` / `unittest`) verifying all 12 parity scenarios.
 - [x] **Phase 5: Production Readiness & Reusable Templates**
   - Generate `docs/template_modernization_execplan.md`.

@@ -9,9 +9,9 @@
 ## 1. Scope & Objective
 - **Business Goal**: Plain-language description of what this change accomplishes for Customer Experience customers.
 - **In-Scope Components**:
-  - `rainbow/app/gcp_tools.py` $\rightarrow$ Tools to add or modify.
+  - `customer_agent/app/gcp_tools.py` $\rightarrow$ Tools to add or modify.
   - Firestore collections affected (`customers`, `orders`, `otps`, `policies`, `escalations`, or new collection).
-  - Prompts in `rainbow/app/agent.py`.
+  - Prompts in `customer_agent/app/agent.py`.
 - **Out-of-Scope**: Explicit boundaries of what is excluded.
 
 ---
@@ -33,10 +33,10 @@
 - [ ] **Phase 3: Target Architecture, Schemas & Validation Spec**
   - Define Firestore document schemas and atomic transaction logic in `docs/[flow]_design.md`.
   - Create parity test scenarios matrix in `docs/[flow]_validation.md`.
-  - Scaffold tests in `rainbow/tests/integration/test_[flow]_parity.py`.
+  - Scaffold tests in `customer_agent/tests/integration/test_[flow]_parity.py`.
 - [ ] **Phase 4: Implementation & Validation Loop**
-  - Implement business tools in `rainbow/app/gcp_tools.py`.
-  - Register tools in `rainbow/app/agent.py`.
+  - Implement business tools in `customer_agent/app/gcp_tools.py`.
+  - Register tools in `customer_agent/app/agent.py`.
   - Run parity test suite (`pytest`) and verify 100% pass rate.
   - Run ADK eval suite (`agents-cli eval run`).
 - [ ] **Phase 5: Production Readiness & Release**

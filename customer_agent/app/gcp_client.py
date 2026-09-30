@@ -38,7 +38,7 @@ except Exception:
 PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT", "has-demo-500917")
 LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
 
-logger = logging.getLogger("rainbow.gcp_client")
+logger = logging.getLogger("customer_agent.gcp_client")
 
 
 class InMemoryFirestoreMock:

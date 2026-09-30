@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""GCP-native tools for the Customer Experience Agent (Rainbow).
+"""GCP-native tools for the Customer Experience Agent.
 
 Backed by Cloud Firestore, Agent Platform RAG, and Cloud Logging.
 """
@@ -26,7 +26,7 @@ from datetime import date, datetime, timedelta, timezone
 
 from app.gcp_client import gcp_manager
 
-logger = logging.getLogger("rainbow.gcp_tools")
+logger = logging.getLogger("customer_agent.gcp_tools")
 
 RETURN_WINDOW_DAYS = 30
 MAX_OTP_ATTEMPTS = 2

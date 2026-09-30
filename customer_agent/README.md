@@ -1,4 +1,4 @@
-# rainbow
+# Customer Experience Agent
 
 Simple ReAct agent
 Agent generated with `agents-cli` version `1.5.0`
@@ -6,7 +6,7 @@ Agent generated with `agents-cli` version `1.5.0`
 ## Project Structure
 
 ```
-rainbow/
+customer_agent/
 ├── app/         # Core agent code
 │   ├── agent.py               # Main agent logic
 │   ├── fast_api_app.py        # FastAPI Backend server

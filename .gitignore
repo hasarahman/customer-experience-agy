@@ -1,23 +1,23 @@
 # Secrets — never commit
 credentials/
 .env
-rainbow/.env
+customer_agent/.env
 *-key.json
 *token*.json
 
 # Generated / rebuildable artifacts
 rag/chroma_db/
-rainbow/artifacts/
-rainbow/escalations.log
-rainbow/app/.adk/
-rainbow/.google-agents-cli/
-rainbow/app/__pycache__/
-rainbow/app/app_utils/__pycache__/
-rainbow/.venv/
-rainbow/uv.lock
+customer_agent/artifacts/
+customer_agent/escalations.log
+customer_agent/app/.adk/
+customer_agent/.google-agents-cli/
+customer_agent/app/__pycache__/
+customer_agent/app/app_utils/__pycache__/
+customer_agent/.venv/
+customer_agent/uv.lock
 
 # OS
 .DS_Store
 **/.DS_Store
 # Kept locally only, not for the repo
-docs/Rainbow_Demo_Script.pdf
+docs/*Demo_Script*.pdf

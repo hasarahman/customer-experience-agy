@@ -1,9 +1,9 @@
 # Agent Guidelines & Repository Architecture
 
 ## Overview
-This repository contains **Rainbow**, an enterprise AI Customer Experience Agent built with Google's **Agent Development Kit (ADK)** and powered by **Gemini** on Agent Platform. 
+This repository contains the enterprise AI **Customer Experience Agent** built with Google's **Agent Development Kit (ADK)** and powered by **Gemini** on Agent Platform. 
 
-Rainbow handles customer support journeys for Customer Experience, including:
+The agent handles customer support journeys for Customer Experience, including:
 - **Order Status Inquiries**: Lookup, shipping status, tracking, and carrier details.
 - **Return & Refund Requests**: 30-day eligibility determination, category exclusions, and return initiation.
 - **Order Cancellation**: Pre-shipment cancellation for processing orders.
@@ -45,7 +45,7 @@ All development and modernization work must follow the **5-Phase Modernization F
 
 ## Operating Commands
 
-Run these commands from the `rainbow/` directory using `uv`:
+Run these commands from the `customer_agent/` directory using `uv`:
 
 | Command | Purpose |
 | :--- | :--- |

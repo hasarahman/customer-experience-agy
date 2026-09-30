@@ -1,4 +1,4 @@
-# Customer Experience Agent (Rainbow) — GCP-Native Enterprise AI Agent
+# Customer Experience Agent — GCP-Native Enterprise AI Agent
 
 An enterprise AI customer experience agent built natively on **Google Cloud Platform (Cloud Run, Cloud Firestore, Agent Platform)** and orchestrated with **Google ADK (Agent Development Kit)**, engineered end-to-end using **Google Antigravity**.
 
@@ -10,7 +10,7 @@ An enterprise AI customer experience agent built natively on **Google Cloud Plat
 flowchart TD
     Customer["Customer<br/>(hasan2296@outlook.com)"] --> WebUI["Web Chat UI<br/>(Port 8085 /scripts/web_chat.py)"]
     WebUI --> Proxy["IAM Authenticated Proxy<br/>(Port 8080)"]
-    Proxy --> CloudRun["Google Cloud Run<br/>(rainbow-agent container)"]
+    Proxy --> CloudRun["Google Cloud Run<br/>(Customer Experience Agent)"]
     
     subgraph Container["Cloud Run Service Container"]
         ADK["Google ADK Agent Runtime<br/>(Gemini 2.5 Flash)"]
@@ -71,7 +71,7 @@ flowchart LR
 
 1. **Knowledge Base Ingestion**:
    - Company policies are maintained in [`data/customer_experience_knowledge_base.md`](data/customer_experience_knowledge_base.md).
-   - An ingestion script (`rainbow/scripts/index_knowledge_base.py`) parses the document by semantic section headers (`##` and `###`), preserving contextual hierarchy.
+   - An ingestion script (`customer_agent/scripts/index_knowledge_base.py`) parses the document by semantic section headers (`##` and `###`), preserving contextual hierarchy.
 2. **Semantic Embeddings with Agent Platform**:
    - Each section is passed to Google's **Agent Platform** using the **`text-embedding-004`** model to generate dense semantic embeddings.
    - The embeddings and section text are saved into the Cloud Firestore **`policies`** collection.
@@ -126,7 +126,7 @@ This agent was engineered end-to-end using **Google Antigravity**:
 
 ### 2. Environment Setup
 ```bash
-cd rainbow
+cd customer_agent
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
@@ -135,21 +135,21 @@ pip install -e .
 ### 3. Seed Cloud Firestore & Index the Policy Knowledge Base
 ```bash
 # Seed customers, orders, and initialize collections in Cloud Firestore
-python3 rainbow/scripts/seed_firestore.py
+python3 customer_agent/scripts/seed_firestore.py
 
 # Index markdown policies into Firestore using Agent Platform embeddings
-python3 rainbow/scripts/index_knowledge_base.py
+python3 customer_agent/scripts/index_knowledge_base.py
 ```
 
 ### 4. Run Automated Parity & Integration Tests
 ```bash
-pytest rainbow/tests/integration/test_firestore_parity.py -v
-pytest rainbow/tests/integration/test_e2e_simulation.py -v
+pytest customer_agent/tests/integration/test_firestore_parity.py -v
+pytest customer_agent/tests/integration/test_e2e_simulation.py -v
 ```
 
 ### 5. Launch the Web Chat UI
 ```bash
-python3 rainbow/scripts/web_chat.py
+python3 customer_agent/scripts/web_chat.py
 ```
 Open **`http://127.0.0.1:8085`** in your browser to interact with the live agent.
 
@@ -158,8 +158,8 @@ Open **`http://127.0.0.1:8085`** in your browser to interact with the live agent
 ## Repository Structure
 
 ```
-customer-experience-agy/
-├── rainbow/                      # Agent Core Application
+customer-experience-agent/
+├── customer_agent/               # Agent Core Application
 │   ├── app/
 │   │   ├── agent.py              # ADK Agent definition & prompt instructions
 │   │   ├── gcp_tools.py          # Tools mapped to Firestore & Agent Platform

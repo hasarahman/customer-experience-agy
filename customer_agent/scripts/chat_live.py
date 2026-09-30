@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Interactive Live Terminal Chat with Customer Experience Rainbow Agent on Cloud Run."""
+"""Interactive Live Terminal Chat with Customer Experience Agent on Cloud Run."""
 
 import json
 import subprocess
@@ -37,7 +37,7 @@ def api_post(endpoint: str, payload: dict | None = None, token: str = "") -> dic
 
 def main():
     print("=" * 65)
-    print(" 🌈 Welcome to Customer Experience — Live Cloud Run Agent")
+    print(" 📚 Welcome to Customer Experience — Live Cloud Run Agent")
     print(f" Connecting to: {CLOUD_RUN_URL}")
     print("=" * 65)
 
@@ -49,7 +49,7 @@ def main():
     session = api_post(f"/apps/app/users/{user_id}/sessions", token=token)
     session_id = session.get("id")
     print(f"[Session] Active session ID: {session_id}")
-    print("\nYou can now chat with Rainbow! Type 'exit' or 'quit' to end.\n")
+    print("\nYou can now chat with the Assistant! Type 'exit' or 'quit' to end.\n")
     print("💡 Hints:")
     print("  • Ask about returns: 'I want to return order BK-10001 (hasan2296@outlook.com)'")
     print("  • Verification code: when prompted for OTP, enter '123456'")
@@ -80,7 +80,7 @@ def main():
             },
         }
 
-        print("⏳ Rainbow is thinking...", end="\r", flush=True)
+        print("⏳ Assistant is thinking...", end="\r", flush=True)
 
         try:
             events = api_post("/run", payload, token=token)
@@ -101,11 +101,11 @@ def main():
                             resp_str = resp_str[:100] + "..."
                         print(f"   📥 [Tool Result] {fr['name']} -> {resp_str}")
                     elif "text" in p and p["text"].strip():
-                        print(f"\n🤖 Rainbow: {p['text'].strip()}")
+                        print(f"\n🤖 Assistant: {p['text'].strip()}")
                         agent_spoke = True
 
             if not agent_spoke:
-                print("\n🤖 Rainbow: (No text response received)")
+                print("\n🤖 Assistant: (No text response received)")
 
         except Exception as e:
             print(f"\n❌ Error communicating with Cloud Run: {e}")

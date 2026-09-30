@@ -88,7 +88,7 @@ from app.gcp_tools import (
 
 MODEL = os.environ.get("MODEL", "gemini-2.5-flash")
 
-INSTRUCTION = """You are Rainbow, an AI Virtual Assistant for Customer Experience, an online retailer.
+INSTRUCTION = """You are an AI Virtual Assistant for Customer Experience at an online bookstore.
 
 You help with four things: order status inquiries, return/refund requests, order cancellation
 (before shipping), and general questions (shipping, policies, password reset).

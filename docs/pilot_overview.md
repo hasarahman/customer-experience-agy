@@ -2,7 +2,7 @@
 
 ## 1. Executive Summary & Purpose
 
-This document captures the end-to-end baseline anatomy of the **Customer Experience Agent (`Rainbow`)**, formalizing the **Phase 2 (Inventory & Discovery)** deliverable of the [OpenAI Code Modernization Framework](https://developers.openai.com/cookbook/examples/codex/code_modernization).
+This document captures the end-to-end baseline anatomy of the **Customer Experience Agent **, formalizing the **Phase 2 (Inventory & Discovery)** deliverable of the [OpenAI Code Modernization Framework](https://developers.openai.com/cookbook/examples/codex/code_modernization).
 
 It details how the existing demo functions today—its backing systems, data flows, business rules, and schemas—and provides the definitive baseline for migrating from prototype components (Google Sheets, Stytch, local ChromaDB) to an enterprise **100% GCP-Native Firestore Architecture** in project **`has-demo-50091`**.
 
@@ -14,12 +14,12 @@ It details how the existing demo functions today—its backing systems, data flo
 
 | Component | Path | Language / Tech | Responsibilities | Current Backing System | Target GCP-Native System |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Agent Core** | `rainbow/app/agent.py` | Python (Google ADK) | Intent routing, prompt instructions, tool wiring | Agent Platform Gemini (`gemini-3.5-flash-lite`) | Agent Platform Gemini (Preserved) |
-| **Tool Suite** | `rainbow/app/tools.py` | Python | 8 business tools for orders, returns, auth, RAG | Sheets API, Stytch SDK, ChromaDB | Cloud Firestore SDK, Vertex Embeddings |
-| **FastAPI / A2A App** | `rainbow/app/fast_api_app.py` | Python (FastAPI) | HTTP API & Agent-to-Agent protocol server | Local process (`uvicorn`) | Cloud Run container |
+| **Agent Core** | `customer_agent/app/agent.py` | Python (Google ADK) | Intent routing, prompt instructions, tool wiring | Agent Platform Gemini (`gemini-3.5-flash-lite`) | Agent Platform Gemini (Preserved) |
+| **Tool Suite** | `customer_agent/app/tools.py` | Python | 8 business tools for orders, returns, auth, RAG | Sheets API, Stytch SDK, ChromaDB | Cloud Firestore SDK, Vertex Embeddings |
+| **FastAPI / A2A App** | `customer_agent/app/fast_api_app.py` | Python (FastAPI) | HTTP API & Agent-to-Agent protocol server | Local process (`uvicorn`) | Cloud Run container |
 | **RAG Indexer** | `rag/build_index.py` | Python | Chunker & vector database generator | Local ChromaDB (`sqlite3`) | Firestore Vector Search (`policies` col) |
 | **RAG Query** | `rag/query.py` | Python | Standalone vector similarity query | Local ChromaDB (`sqlite3`) | Firestore `find_nearest` with `text-embedding-004` |
-| **OAuth Scripts** | `rainbow/scripts/authorize_sheets.py` | Python | One-time desktop Google OAuth consent | Interactive browser consent flow | None (Replaced by Cloud IAM / ADC) |
+| **OAuth Scripts** | `customer_agent/scripts/authorize_sheets.py` | Python | One-time desktop Google OAuth consent | Interactive browser consent flow | None (Replaced by Cloud IAM / ADC) |
 | **SOP Specification** | `docs/SOP.md` | Markdown | Human support agent decision tree | Human manual | Canonical rulebook for agent prompts |
 | **Knowledge Base** | `data/customer_experience_knowledge_base.md` | Markdown | Source policies (shipping, returns, FAQ) | Raw Markdown text | Chunked & vectorized in Firestore |
 
@@ -31,7 +31,7 @@ It details how the existing demo functions today—its backing systems, data flo
 sequenceDiagram
     autonumber
     actor Customer
-    participant Agent as Rainbow (ADK Agent)
+    participant Agent as Customer Experience Agent (ADK Agent)
     participant Firestore as Cloud Firestore (has-demo-50091)
     participant VertexAI as Agent Platform (text-embedding-004)
     participant Logging as Cloud Logging & Audit
@@ -147,7 +147,7 @@ Replaces local SQLite ChromaDB.
 ---
 
 ### `escalations` Collection
-Replaces flat log file `rainbow/escalations.log`.
+Replaces flat log file `customer_agent/escalations.log`.
 - **Document ID**: Auto-generated UUID
 
 | Field Name | Type | Description |

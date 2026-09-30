@@ -2,7 +2,7 @@
 
 ## 1. Overview & Architecture Goals
 
-This document specifies the target architecture, data models, and service interfaces for the **Customer Experience Agent (`Rainbow`)** on Google Cloud Platform. 
+This document specifies the target architecture, data models, and service interfaces for the **Customer Experience Agent ** on Google Cloud Platform. 
 
 It satisfies the **Phase 3 (Target Design & Spec)** deliverable of the [OpenAI Code Modernization Framework](https://developers.openai.com/cookbook/examples/codex/code_modernization).
 
@@ -20,18 +20,18 @@ It satisfies the **Phase 3 (Target Design & Spec)** deliverable of the [OpenAI C
 flowchart TD
     subgraph ClientLayer ["Client & Interface Layer"]
         CLI["agents-cli playground"]
-        API["FastAPI / A2A Protocol (rainbow/app/fast_api_app.py)"]
+        API["FastAPI / A2A Protocol (customer_agent/app/fast_api_app.py)"]
     end
 
-    subgraph AgentLayer ["ADK Agent Core (rainbow/app/agent.py)"]
-        Agent["Root Agent: Rainbow"]
+    subgraph AgentLayer ["ADK Agent Core (customer_agent/app/agent.py)"]
+        Agent["Root Agent: Customer Experience Agent"]
         Model["Gemini 3.5 Flash Lite (Agent Platform)"]
         Instruction["SOP System Instruction & Intent Routing"]
         Agent <--> Model
         Agent --- Instruction
     end
 
-    subgraph ToolsLayer ["GCP Tool Implementations (rainbow/app/gcp_tools.py)"]
+    subgraph ToolsLayer ["GCP Tool Implementations (customer_agent/app/gcp_tools.py)"]
         T_Ord["lookup_order"]
         T_Cust["lookup_customer"]
         T_Ret["initiate_return"]
@@ -275,7 +275,7 @@ logger.log_struct(
 
 ### File Layout
 ```
-rainbow/
+customer_agent/
 ├── app/
 │   ├── gcp_tools.py           # All 8 modernized GCP tools
 │   ├── gcp_client.py          # Firestore & Agent Platform client wrapper with emulator/mock fallback

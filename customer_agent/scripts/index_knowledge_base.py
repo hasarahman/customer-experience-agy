@@ -15,7 +15,7 @@
 """Chunks Customer Experience policies and indexes them into Cloud Firestore with Agent Platform vector embeddings.
 
 Usage:
-    python3 rainbow/scripts/index_knowledge_base.py
+    python3 customer_agent/scripts/index_knowledge_base.py
 """
 
 import os

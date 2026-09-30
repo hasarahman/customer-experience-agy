@@ -50,7 +50,7 @@ HTML_PAGE = """<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customer Experience — Rainbow Agent</title>
+  <title>Customer Experience Assistant</title>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -181,9 +181,9 @@ HTML_PAGE = """<!DOCTYPE html>
 <body>
   <div class="chat-container">
     <div class="chat-header">
-      <div style="font-size: 24px;">🌈</div>
+      <div style="font-size: 24px;">📚</div>
       <div>
-        <h2 style="font-size: 18px; font-weight: 500;">Customer Experience — Rainbow Agent</h2>
+        <h2 style="font-size: 18px; font-weight: 500;">Customer Experience Assistant</h2>
         <div style="font-size: 12px; opacity: 0.9;">GCP-Native • Cloud Run • Firestore • Agent Platform</div>
       </div>
       <div class="badge">Live 🟢</div>
@@ -235,7 +235,7 @@ HTML_PAGE = """<!DOCTYPE html>
       const loadDiv = document.createElement('div');
       loadDiv.className = 'msg agent';
       loadDiv.id = 'loading';
-      loadDiv.textContent = 'Rainbow is thinking...';
+      loadDiv.textContent = 'Assistant is thinking...';
       msgs.appendChild(loadDiv);
       msgs.scrollTop = msgs.scrollHeight;
       sendBtn.disabled = true;

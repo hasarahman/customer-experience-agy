@@ -4,8 +4,8 @@
       "eval_case_id": "order_status_after_verification",
       "agent_data": {
         "agents": {
-          "rainbow": {
-            "agent_id": "rainbow",
+          "customer_agent": {
+            "agent_id": "customer_agent",
             "agent_type": "SingleAgent",
             "instruction": "Customer Experience customer support agent."
           }
@@ -26,7 +26,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -58,7 +58,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -85,7 +85,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -118,7 +118,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -153,8 +153,8 @@
       "eval_case_id": "ownership_guardrail_denies_other_customers_order",
       "agent_data": {
         "agents": {
-          "rainbow": {
-            "agent_id": "rainbow",
+          "customer_agent": {
+            "agent_id": "customer_agent",
             "agent_type": "SingleAgent",
             "instruction": "Customer Experience customer support agent."
           }
@@ -175,7 +175,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -207,7 +207,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -234,7 +234,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -267,7 +267,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -302,8 +302,8 @@
       "eval_case_id": "return_window_guardrail_denies_33_day_old_order",
       "agent_data": {
         "agents": {
-          "rainbow": {
-            "agent_id": "rainbow",
+          "customer_agent": {
+            "agent_id": "customer_agent",
             "agent_type": "SingleAgent",
             "instruction": "Customer Experience customer support agent."
           }
@@ -324,7 +324,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -356,7 +356,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -383,7 +383,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -416,7 +416,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -451,8 +451,8 @@
       "eval_case_id": "delivered_but_not_received_escalates_immediately",
       "agent_data": {
         "agents": {
-          "rainbow": {
-            "agent_id": "rainbow",
+          "customer_agent": {
+            "agent_id": "customer_agent",
             "agent_type": "SingleAgent",
             "instruction": "Customer Experience customer support agent."
           }
@@ -473,7 +473,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -505,7 +505,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -532,7 +532,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -565,7 +565,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -600,8 +600,8 @@
       "eval_case_id": "compound_request_ungated_and_gated_in_one_message",
       "agent_data": {
         "agents": {
-          "rainbow": {
-            "agent_id": "rainbow",
+          "customer_agent": {
+            "agent_id": "customer_agent",
             "agent_type": "SingleAgent",
             "instruction": "Customer Experience customer support agent."
           }
@@ -622,7 +622,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -654,7 +654,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -681,7 +681,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -714,7 +714,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -749,8 +749,8 @@
       "eval_case_id": "cancel_order_already_shipped_denied",
       "agent_data": {
         "agents": {
-          "rainbow": {
-            "agent_id": "rainbow",
+          "customer_agent": {
+            "agent_id": "customer_agent",
             "agent_type": "SingleAgent",
             "instruction": "Customer Experience customer support agent."
           }
@@ -771,7 +771,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -803,7 +803,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -830,7 +830,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -863,7 +863,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -898,8 +898,8 @@
       "eval_case_id": "cancel_order_processing_status_succeeds",
       "agent_data": {
         "agents": {
-          "rainbow": {
-            "agent_id": "rainbow",
+          "customer_agent": {
+            "agent_id": "customer_agent",
             "agent_type": "SingleAgent",
             "instruction": "Customer Experience customer support agent."
           }
@@ -920,7 +920,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -952,7 +952,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -979,7 +979,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {
@@ -1012,7 +1012,7 @@
                 }
               },
               {
-                "author": "rainbow",
+                "author": "customer_agent",
                 "content": {
                   "parts": [
                     {

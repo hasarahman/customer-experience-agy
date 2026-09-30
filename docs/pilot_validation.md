@@ -32,15 +32,15 @@ The test harness must exercise 12 critical behavioral scenarios across both unit
 ## 3. Test Scaffolding & Execution
 
 ### 3.1 Automated Parity Suite (`tests/integration/test_firestore_parity.py`)
-A comprehensive pytest suite verifying each tool in `rainbow/app/gcp_tools.py` directly against the Firestore client layer:
+A comprehensive pytest suite verifying each tool in `customer_agent/app/gcp_tools.py` directly against the Firestore client layer:
 ```bash
-cd rainbow && uv run pytest tests/integration/test_firestore_parity.py -v
+cd customer_agent && uv run pytest tests/integration/test_firestore_parity.py -v
 ```
 
 ### 3.2 ADK Multi-Turn Evaluation Suite
 Running the full multi-turn conversational agent against the golden datasets:
 ```bash
-cd rainbow
+cd customer_agent
 agents-cli eval run --dataset tests/eval/datasets/single-turn.json --config tests/eval/eval_config_single_turn.yaml
 agents-cli eval run --dataset tests/eval/datasets/multi-turn.json --config tests/eval/eval_config_multi_turn.yaml
 ```

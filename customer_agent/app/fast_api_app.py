@@ -66,8 +66,8 @@ app: FastAPI = get_fast_api_app(
     otel_to_cloud=otel_to_cloud,
     lifespan=lifespan,
 )
-app.title = "rainbow"
-app.description = "API for interacting with the Agent rainbow"
+app.title = "customer_agent"
+app.description = "API for interacting with Customer Experience Agent"
 
 
 # Main execution

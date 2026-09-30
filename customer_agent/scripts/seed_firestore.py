@@ -15,7 +15,7 @@
 """Seeds sample customer and order data directly into Cloud Firestore on project has-demo-500917.
 
 Usage:
-    python3 rainbow/scripts/seed_firestore.py
+    python3 customer_agent/scripts/seed_firestore.py
 """
 
 import os

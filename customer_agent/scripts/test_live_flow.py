@@ -90,8 +90,8 @@ def run_tests():
             "turn": 1,
             "user": "Hi",
             "expect_tool": None,
-            "validate": lambda reply, tools: "Rainbow" in reply and "help" in reply.lower(),
-            "desc": "Rainbow greeting returned",
+            "validate": lambda reply, tools: "Assistant" in reply and "help" in reply.lower(),
+            "desc": "Virtual Assistant greeting returned",
         },
         {
             "turn": 2,
@@ -149,7 +149,7 @@ def run_tests():
         print(f"👤 USER: {t['user']}")
         reply, tools = send_turn(token, user_id, session_id, t["user"])
         print(f"⚙️  TOOLS USED: {tools if tools else 'None'}")
-        print(f"🤖 RAINBOW:\n{reply}\n")
+        print(f"🤖 ASSISTANT:\n{reply}\n")
 
         # Check for duplication bug
         paragraphs = [p.strip() for p in reply.split("\n\n") if p.strip()]
