@@ -103,15 +103,26 @@ def run_tests():
         {
             "turn": 3,
             "user": "hasan2296@outlook.com",
-            "expect_tool": "find_orders_by_email",
+            "expect_tool": "send_auth_code",
             "validate": lambda reply, tools: (
-                "find_orders_by_email" in tools
-                and ("Project Hail Mary" in reply or "Midnight Library" in reply)
+                "send_auth_code" in tools
+                and any(k in reply.lower() for k in ["code", "verification", "sent"])
             ),
-            "desc": "Executes find_orders_by_email & lists multiple orders",
+            "desc": "Executes send_auth_code to verify identity before revealing orders",
         },
         {
             "turn": 4,
+            "user": "123456",
+            "expect_tool": "verify_auth_code",
+            "validate": lambda reply, tools: (
+                "verify_auth_code" in tools
+                and "find_orders_by_email" in tools
+                and ("Project Hail Mary" in reply or "Midnight Library" in reply)
+            ),
+            "desc": "Executes verify_auth_code & find_orders_by_email, listing customer orders",
+        },
+        {
+            "turn": 5,
             "user": "Project Hail Mary",
             "expect_tool": "lookup_order",
             "validate": lambda reply, tools: (
@@ -121,7 +132,7 @@ def run_tests():
             "desc": "Executes lookup_order & reports 'Processing' status",
         },
         {
-            "turn": 5,
+            "turn": 6,
             "user": "whats your return window?",
             "expect_tool": "search_policy_kb",
             "validate": lambda reply, tools: (

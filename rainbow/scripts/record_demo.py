@@ -135,44 +135,58 @@ def run_recording(headless=True):
         time.sleep(3.5)
 
         # ---------------------------------------------------------
-        # Turn 3: Provide Email Address (Reverse Lookup)
+        # Turn 3: Provide Email Address (Triggers OTP Auth)
         # ---------------------------------------------------------
-        print("\n💬 [Turn 3/5] Providing account email (hasan2296@outlook.com)...")
+        print("\n💬 [Turn 3/6] Providing account email (hasan2296@outlook.com)...")
         query_3 = "hasan2296@outlook.com"
         type_slowly(page, "#userInput", query_3, delay=0.04)
         time.sleep(0.7)
 
         page.click("#sendBtn")
-        print("   ⏳ Cloud Run executing find_orders_by_email in Firestore...")
+        print("   ⏳ Cloud Run executing send_auth_code in Firestore...")
         wait_for_agent_reply(page, expected_agent_count=3)
-        print("   ✅ Rainbow detected multiple orders and asked to choose book!")
+        print("   ✅ Rainbow generated OTP and requested 6-digit code!")
+        time.sleep(3.5)
+
+        # ---------------------------------------------------------
+        # Turn 4: Provide OTP Verification Code
+        # ---------------------------------------------------------
+        print("\n💬 [Turn 4/6] Entering 6-digit OTP code (123456)...")
+        query_4 = "123456"
+        type_slowly(page, "#userInput", query_4, delay=0.06)
+        time.sleep(0.7)
+
+        page.click("#sendBtn")
+        print("   ⏳ Cloud Run executing verify_auth_code & find_orders_by_email...")
+        wait_for_agent_reply(page, expected_agent_count=4)
+        print("   ✅ Identity verified! Rainbow listed orders and asked to choose book!")
         time.sleep(4.5)
 
         # ---------------------------------------------------------
-        # Turn 4: Disambiguate by Book Title
+        # Turn 5: Disambiguate by Book Title
         # ---------------------------------------------------------
-        print("\n💬 [Turn 4/5] Selecting book: Project Hail Mary...")
-        query_4 = "Project Hail Mary"
-        type_slowly(page, "#userInput", query_4, delay=0.04)
+        print("\n💬 [Turn 5/6] Selecting book: Project Hail Mary...")
+        query_5 = "Project Hail Mary"
+        type_slowly(page, "#userInput", query_5, delay=0.04)
         time.sleep(0.7)
 
         page.click("#sendBtn")
         print("   ⏳ Cloud Run checking delivery status with lookup_order...")
-        wait_for_agent_reply(page, expected_agent_count=4)
+        wait_for_agent_reply(page, expected_agent_count=5)
         print("   ✅ Rainbow reported 'Processing' delivery status!")
         time.sleep(4.5)
 
         # ---------------------------------------------------------
-        # Turn 5: Grounded Policy Question (Return Window)
+        # Turn 6: Grounded Policy Question (Return Window)
         # ---------------------------------------------------------
-        print("\n💬 [Turn 5/5] Inquiring about return window...")
-        query_5 = "whats your return window?"
-        type_slowly(page, "#userInput", query_5, delay=0.035)
+        print("\n💬 [Turn 6/6] Inquiring about return window...")
+        query_6 = "whats your return window?"
+        type_slowly(page, "#userInput", query_6, delay=0.035)
         time.sleep(0.7)
 
         page.click("#sendBtn")
         print("   ⏳ Cloud Run executing search_policy_kb via Agent Platform RAG...")
-        wait_for_agent_reply(page, expected_agent_count=5)
+        wait_for_agent_reply(page, expected_agent_count=6)
         print("   ✅ Rainbow answered 30-day policy concisely!")
         time.sleep(6.5)  # Showcase complete conversation
 

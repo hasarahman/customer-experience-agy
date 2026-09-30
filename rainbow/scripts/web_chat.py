@@ -197,6 +197,7 @@ HTML_PAGE = """<!DOCTYPE html>
       <span class="chip" onclick="fillPrompt('Hi')">Hi</span>
       <span class="chip" onclick="fillPrompt('I haven\'t received my order yet, can you check on my order? I lost my order number.')">Lost Order Number</span>
       <span class="chip" onclick="fillPrompt('hasan2296@outlook.com')">hasan2296@outlook.com</span>
+      <span class="chip" onclick="fillPrompt('123456')">Enter OTP: 123456</span>
       <span class="chip" onclick="fillPrompt('Project Hail Mary')">Project Hail Mary</span>
       <span class="chip" onclick="fillPrompt('whats your return window?')">Return Window</span>
     </div>
