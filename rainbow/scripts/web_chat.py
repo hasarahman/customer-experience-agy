@@ -289,6 +289,14 @@ class ChatHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
 
     def do_POST(self):
+        if self.path == "/api/reset":
+            SESSION_CACHE.clear()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(b'{"status": "ok"}')
+            return
+
         if self.path == "/api/chat":
             content_length = int(self.headers["Content-Length"])
             post_data = self.rfile.read(content_length)
