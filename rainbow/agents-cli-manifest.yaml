@@ -1,0 +1,14 @@
+name: 'rainbow'
+acli_version: '1.5.0'
+agent_directory: 'app'
+region: 'us-east1'
+base_template: 'adk'
+generated_at: '2026-09-03T15:01:21.330480+00:00'
+language: 'python'
+create_params:
+  deployment_target: 'none'
+  session_type: 'in_memory'
+  cicd_runner: 'skip'
+  is_a2a: true
+  agent_gateway: False
+  agent_guidance_filename: 'AGENTS.md'

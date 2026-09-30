@@ -1,0 +1,3 @@
+metrics_to_run:
+  - final_response_quality
+  - safety
